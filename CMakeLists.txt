@@ -5,6 +5,10 @@ project(DynamicDNS
   LANGUAGES CXX
 )
 
+set(CORE_LIB ${PROJECT_NAME}_core_lib)
+set(EXECUTABLE ${PROJECT_NAME}_exec)
+set(TESTS_EXECUTABLE ${PROJECT_NAME}_tests_exec)
+
 include(FetchContent)
 
 FetchContent_Declare(cpr
@@ -29,7 +33,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_compile_options(-Wall -Wextra -Werror)
-# enable_testing()
+enable_testing()
+
+add_library(${CORE_LIB})
+add_executable(${EXECUTABLE})
+
+target_include_directories(${CORE_LIB}
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 add_subdirectory(src)
-# add_subdirectory(tests)
+
+target_link_libraries(${CORE_LIB}
+  PRIVATE
+    cpr::cpr
+  PUBLIC
+    nlohmann_json::nlohmann_json
+)
+
+target_link_libraries(${EXECUTABLE}
+  PRIVATE
+    ${CORE_LIB}
+)
+
+add_subdirectory(tests)

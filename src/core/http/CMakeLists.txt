@@ -1,5 +1,6 @@
-target_sources(${PROJECT_NAME}
+target_sources(${CORE_LIB}
   PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/client.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/client.cpp
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/client.hpp
 )

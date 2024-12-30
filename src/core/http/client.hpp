@@ -3,25 +3,33 @@
 #include <ostream>
 #include <string>
 #include <string_view>
+#include <utility>
 
 namespace http {
 
 struct Response {
-  std::string body{};
-  long code{};
+  const std::string body{};
+  const long code{};
 
-  friend std::ostream& operator<<(std::ostream& os, const Response& response);
+  explicit Response(std::string body, long code)
+      : body(std::move(body)), code(code) {}
+
+  friend std::ostream& operator<<(std::ostream& os,
+                                  const Response& response) noexcept;
 };
 
 struct Error {
-  std::string message{};
-  long code{};
+  const std::string message{};
+  const long code{};
 
-  friend std::ostream& operator<<(std::ostream& os, const Error& error);
+  explicit Error(std::string msg, long code)
+      : message(std::move(msg)), code(code) {}
+
+  friend std::ostream& operator<<(std::ostream& os,
+                                  const Error& error) noexcept;
 };
 
 class IClient {
- protected:
  public:
   virtual ~IClient() = default;
   virtual std::expected<Response, Error> get(std::string_view url) = 0;

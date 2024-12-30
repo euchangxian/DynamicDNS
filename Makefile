@@ -1,10 +1,10 @@
 BUILD_DIR := build
-SRC_DIR := src
-EXECUTABLE := DynamicDNS
+EXECUTABLE := DynamicDNS_exec
 
 LOG_LEVEL ?= WARNING
 
 override CMAKE_FLAGS := --log-level=$(or ${log-level},${LOG_LEVEL})
+
 .PHONY: all
 all: build
 
@@ -18,9 +18,10 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 .PHONY: test
-test:
-	cmake -B $(BUILD_DIR)
-	cmake --build $(BUILD_DIR) --target test
+test: build
+	pushd $(BUILD_DIR)
+	ctest -j $(nproc)
+	popd
 
 .PHONY: install
 install:
@@ -33,4 +34,4 @@ lint:
 
 .PHONY: run
 run:
-	@./$(BUILD_DIR)/$(SRC_DIR)/$(EXECUTABLE)
+	@./$(BUILD_DIR)/$(EXECUTABLE)
