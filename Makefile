@@ -1,7 +1,8 @@
 BUILD_DIR := build
 EXECUTABLE := DynamicDNS_exec
+TESTS_EXECUTABLE := DynamicDNS_tests_exec
 
-LOG_LEVEL ?= WARNING
+LOG_LEVEL ?= ERROR
 
 override CMAKE_FLAGS := --log-level=$(or ${log-level},${LOG_LEVEL})
 
@@ -18,10 +19,8 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 .PHONY: test
-test: build
-	pushd $(BUILD_DIR)
-	ctest -j $(nproc)
-	popd
+test:
+	@./$(BUILD_DIR)/$(TESTS_EXECUTABLE)
 
 .PHONY: install
 install:

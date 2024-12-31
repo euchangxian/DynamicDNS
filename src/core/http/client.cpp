@@ -24,6 +24,8 @@ std::expected<Response, Error> Client::get(std::string_view url) {
   }
 
   if (r.status_code >= 400) {
+    // TODO: check why r.reason is empty, and whether cpr::Response provides
+    // a field that actually contains the HTTP Message.
     return std::unexpected{Error(r.reason, r.status_code)};
   }
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.20)
 project(DynamicDNS
   VERSION 1.0.0
   DESCRIPTION "Dynamic DNS Updater"
@@ -40,7 +40,7 @@ add_executable(${EXECUTABLE})
 
 target_include_directories(${CORE_LIB}
   PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}
 )
 
 add_subdirectory(src)
@@ -57,4 +57,22 @@ target_link_libraries(${EXECUTABLE}
     ${CORE_LIB}
 )
 
+add_executable(${TESTS_EXECUTABLE})
+
+target_include_directories(${TESTS_EXECUTABLE}
+  PUBLIC
+    ${CMAKE_SOURCE_DIR}
+)
+
 add_subdirectory(tests)
+
+target_link_libraries(${TESTS_EXECUTABLE}
+  PRIVATE
+    ${CORE_LIB}
+    GTest::gtest
+    GTest::gtest_main
+    nlohmann_json::nlohmann_json
+)
+
+include(GoogleTest)
+gtest_discover_tests(${TESTS_EXECUTABLE})

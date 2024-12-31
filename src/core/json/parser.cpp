@@ -15,8 +15,9 @@ std::expected<Parsed, Error> Parser::parse(std::string_view obj) {
   try {
     return nlohmann::json::parse(obj);
   } catch (const nlohmann::json::parse_error& e) {
-    return std::format("{}\nexception id: {}\nbyte position of error: {}",
-                       e.what(), e.id, e.byte);
+    return std::unexpected{
+        Error(std::format("{}\nexception id: {}\nbyte position of error: {}",
+                          e.what(), e.id, e.byte))};
   }
 }
 
