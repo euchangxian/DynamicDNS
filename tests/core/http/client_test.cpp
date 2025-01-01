@@ -16,7 +16,7 @@ TEST(HTTPClientIntegrationTest, GetNotFound) {
   auto result = client.get("https://httpbin.org/status/404");
 
   ASSERT_FALSE(result.has_value());
-  EXPECT_EQ(result.error().code, 404);
+  EXPECT_EQ(result.error().code(), 404);
 }
 
 TEST(HTTPClientIntegrationTest, GetInternalServerError) {
@@ -24,7 +24,7 @@ TEST(HTTPClientIntegrationTest, GetInternalServerError) {
   auto result = client.get("https://httpbin.org/status/500");
 
   ASSERT_FALSE(result.has_value());
-  EXPECT_EQ(result.error().code, 500);
+  EXPECT_EQ(result.error().code(), 500);
 }
 
 TEST(HTTPClientIntegrationTest, GetInvalidURL) {
@@ -32,5 +32,5 @@ TEST(HTTPClientIntegrationTest, GetInvalidURL) {
   auto result = client.get("localhost:xxx");
 
   ASSERT_FALSE(result.has_value());
-  EXPECT_EQ(result.error().code, 0);
+  EXPECT_EQ(result.error().code(), 0);
 }

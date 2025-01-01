@@ -12,10 +12,6 @@ std::ostream& operator<<(std::ostream& os, const Response& response) noexcept {
   return os << "response(" << response.code << "): " << response.body;
 }
 
-std::ostream& operator<<(std::ostream& os, const Error& error) noexcept {
-  return os << "http error(" << error.code << "): " << error.message;
-}
-
 std::expected<Response, Error> Client::get(std::string_view url) {
   cpr::Response r = cpr::Get(cpr::Url{url});
 

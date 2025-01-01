@@ -4,21 +4,15 @@
 #include <string>
 #include <string_view>
 
+#include "src/core/error/error.hpp"
 #include "src/core/http/client.hpp"
 #include "src/core/json/parser.hpp"
 
 namespace ip {
 
+using Error = error::Error;
+
 constexpr std::string_view IP_KEY{"ip"};
-
-struct Error {
-  const std::string message{};
-
-  explicit Error(std::string msg) : message(std::move(msg)) {}
-
-  friend std::ostream& operator<<(std::ostream& os,
-                                  const Error& error) noexcept;
-};
 
 struct V4 {
   static constexpr std::string_view SERVICE_URL{
@@ -48,13 +42,12 @@ struct V6 {
 template <typename Protocol>
 class Resolver {
  private:
-  // TODO: Check if Resolver should own the HTTP Client, or share a reference.
-  http::IClient& httpClient;
-  json::IParser& jsonParser;
+  http::IClient& httpClient_;
+  json::IParser& jsonParser_;
 
  public:
   explicit Resolver(http::IClient& client, json::IParser& parser)
-      : httpClient(client), jsonParser(parser) {}
+      : httpClient_(client), jsonParser_(parser) {}
 
   std::expected<Protocol, Error> getCurrentIP() {
     auto queryResult = queryService(Protocol::SERVICE_URL);
@@ -63,7 +56,7 @@ class Resolver {
       return std::unexpected{Error(queryResult.error().message)};
     }
 
-    auto parseResult = jsonParser.parse(queryResult.value().body);
+    auto parseResult = jsonParser_.parse(queryResult.value().body);
     if (!parseResult) {
       return std::unexpected{Error(parseResult.error().message)};
     }
@@ -79,7 +72,7 @@ class Resolver {
  private:
   std::expected<http::Response, http::Error> queryService(
       std::string_view url) {
-    return httpClient.get(url);
+    return httpClient_.get(url);
   };
 };
 

@@ -5,7 +5,11 @@
 #include <string_view>
 #include <utility>
 
+#include "src/core/error/error.hpp"
+
 namespace http {
+
+using Error = error::Error;
 
 struct Response {
   const std::string body{};
@@ -16,17 +20,6 @@ struct Response {
 
   friend std::ostream& operator<<(std::ostream& os,
                                   const Response& response) noexcept;
-};
-
-struct Error {
-  const std::string message{};
-  const long code{};
-
-  explicit Error(std::string msg, long code)
-      : message(std::move(msg)), code(code) {}
-
-  friend std::ostream& operator<<(std::ostream& os,
-                                  const Error& error) noexcept;
 };
 
 class IClient {

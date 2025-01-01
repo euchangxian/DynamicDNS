@@ -1,22 +1,14 @@
 #pragma once
 #include <expected>
 #include <nlohmann/json.hpp>
-#include <ostream>
 #include <string_view>
-#include <utility>
+
+#include "src/core/error/error.hpp"
 
 namespace json {
 
 using Parsed = nlohmann::json;
-
-struct Error {
-  const std::string message{};
-
-  explicit Error(std::string msg) : message(std::move(msg)) {}
-
-  friend std::ostream& operator<<(std::ostream& os,
-                                  const Error& error) noexcept;
-};
+using Error = error::Error;
 
 class IParser {
  public:

@@ -2,14 +2,9 @@
 
 #include <format>
 #include <nlohmann/json.hpp>
-#include <ostream>
 #include <string_view>
 
 namespace json {
-
-std::ostream& operator<<(std::ostream& os, const Error& error) noexcept {
-  return os << "json error: " << error.message;
-}
 
 std::expected<Parsed, Error> Parser::parse(std::string_view obj) {
   try {

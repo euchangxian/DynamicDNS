@@ -4,10 +4,6 @@
 
 namespace ip {
 
-std::ostream& operator<<(std::ostream& os, const Error& error) noexcept {
-  return os << "ip error: " << error.message;
-}
-
 std::ostream& operator<<(std::ostream& os, const V4& ipv4) noexcept {
   return os << ipv4.address;
 }
