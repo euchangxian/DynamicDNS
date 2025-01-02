@@ -13,5 +13,11 @@ int main() {
   } else {
     std::cout << ipv4.value().address << '\n';
   }
+
+  if (auto res = httpClient.post("https://httpbin.org/post"); !res) {
+    std::cout << res.error() << '\n';
+  } else {
+    std::cout << res.value().body << '\n';
+  }
   return 0;
 }

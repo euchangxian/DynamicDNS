@@ -1,5 +1,6 @@
 #pragma once
 #include <expected>
+#include <map>
 #include <ostream>
 #include <string>
 #include <string_view>
@@ -25,12 +26,23 @@ struct Response {
 class IClient {
  public:
   virtual ~IClient() = default;
+
   virtual std::expected<Response, Error> get(std::string_view url) = 0;
+
+  virtual std::expected<Response, Error> post(
+      std::string_view url,
+      std::string_view body = "",
+      const std::map<std::string, std::string>& headers = {}) = 0;
 };
 
 class Client : public IClient {
  public:
   std::expected<Response, Error> get(std::string_view url) override;
+
+  std::expected<Response, Error> post(
+      std::string_view url,
+      std::string_view body = "",
+      const std::map<std::string, std::string>& headers = {}) override;
 };
 
 }  // namespace http

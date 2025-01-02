@@ -34,3 +34,12 @@ TEST(HTTPClientIntegrationTest, GetInvalidURL) {
   ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error().code(), 0);
 }
+
+TEST(HTTPClientIntegrationTest, PostSuccessRequest) {
+  http::Client client{};
+  auto result = client.post("https://httpbin.org/post");
+
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result->code, 200);
+  EXPECT_FALSE(result->body.empty());
+}
