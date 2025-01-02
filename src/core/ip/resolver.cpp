@@ -2,6 +2,8 @@
 
 #include <ostream>
 
+#include "types.hpp"
+
 namespace ip {
 
 std::ostream& operator<<(std::ostream& os, const V4& ipv4) noexcept {

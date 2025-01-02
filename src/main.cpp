@@ -1,7 +1,8 @@
 #include <iostream>
 
-#include "core/http/client.hpp"
-#include "core/ip/resolver.hpp"
+#include "src/core/http/client.hpp"
+#include "src/core/ip/resolver.hpp"
+#include "src/core/ip/types.hpp"
 
 int main() {
   http::Client httpClient{};
