@@ -16,7 +16,7 @@ constexpr std::string_view IP_KEY{"ip"};
 template <typename Protocol>
 class Resolver {
  public:
-  explicit Resolver(http::IClient& client, json::IParser& parser)
+  explicit Resolver(const http::IClient& client, const json::IParser& parser)
       : httpClient_(client), jsonParser_(parser) {}
 
   std::expected<Protocol, Error> getCurrentIP() const {
