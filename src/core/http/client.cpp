@@ -14,7 +14,7 @@ std::ostream& operator<<(std::ostream& os, const Response& response) noexcept {
   return os << "response(" << response.code << "): " << response.body;
 }
 
-std::expected<Response, Error> Client::get(std::string_view url) {
+std::expected<Response, Error> Client::get(std::string_view url) const {
   cpr::Response r = cpr::Get(cpr::Url{url});
 
   if (r.error) {
@@ -33,7 +33,7 @@ std::expected<Response, Error> Client::get(std::string_view url) {
 std::expected<Response, Error> Client::post(
     std::string_view url,
     std::string_view body,
-    const std::map<std::string, std::string>& headers) {
+    const std::map<std::string, std::string>& headers) const {
   cpr::Response r = cpr::Post(cpr::Url{url}, cpr::Body{body},
                               cpr::Header{headers.begin(), headers.end()});
 

@@ -6,7 +6,7 @@
 
 namespace json {
 
-std::expected<Parsed, Error> Parser::parse(std::string_view obj) {
+std::expected<Parsed, Error> Parser::parse(std::string_view obj) const {
   try {
     return nlohmann::json::parse(obj);
   } catch (const nlohmann::json::parse_error& e) {

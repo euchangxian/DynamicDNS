@@ -15,15 +15,11 @@ constexpr std::string_view IP_KEY{"ip"};
 
 template <typename Protocol>
 class Resolver {
- private:
-  http::IClient& httpClient_;
-  json::IParser& jsonParser_;
-
  public:
   explicit Resolver(http::IClient& client, json::IParser& parser)
       : httpClient_(client), jsonParser_(parser) {}
 
-  std::expected<Protocol, Error> getCurrentIP() {
+  std::expected<Protocol, Error> getCurrentIP() const {
     auto queryResult = queryService(Protocol::SERVICE_URL);
 
     if (!queryResult) {
@@ -44,8 +40,11 @@ class Resolver {
   }
 
  private:
+  const http::IClient& httpClient_;
+  const json::IParser& jsonParser_;
+
   std::expected<http::Response, http::Error> queryService(
-      std::string_view url) {
+      std::string_view url) const {
     return httpClient_.get(url);
   };
 };

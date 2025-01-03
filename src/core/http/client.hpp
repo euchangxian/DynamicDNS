@@ -27,22 +27,22 @@ class IClient {
  public:
   virtual ~IClient() = default;
 
-  virtual std::expected<Response, Error> get(std::string_view url) = 0;
+  virtual std::expected<Response, Error> get(std::string_view url) const = 0;
 
   virtual std::expected<Response, Error> post(
       std::string_view url,
       std::string_view body = "",
-      const std::map<std::string, std::string>& headers = {}) = 0;
+      const std::map<std::string, std::string>& headers = {}) const = 0;
 };
 
 class Client : public IClient {
  public:
-  std::expected<Response, Error> get(std::string_view url) override;
+  std::expected<Response, Error> get(std::string_view url) const override;
 
   std::expected<Response, Error> post(
       std::string_view url,
       std::string_view body = "",
-      const std::map<std::string, std::string>& headers = {}) override;
+      const std::map<std::string, std::string>& headers = {}) const override;
 };
 
 }  // namespace http

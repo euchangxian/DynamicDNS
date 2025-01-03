@@ -14,12 +14,12 @@ class IParser {
  public:
   virtual ~IParser() = default;
 
-  virtual std::expected<Parsed, Error> parse(std::string_view obj) = 0;
+  virtual std::expected<Parsed, Error> parse(std::string_view obj) const = 0;
 };
 
 class Parser : public IParser {
  public:
-  std::expected<Parsed, Error> parse(std::string_view obj) override;
+  std::expected<Parsed, Error> parse(std::string_view obj) const override;
 };
 
 }  // namespace json
