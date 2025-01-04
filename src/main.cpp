@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "src/core/config/config.hpp"
 #include "src/core/http/client.hpp"
 #include "src/core/ip/resolver.hpp"
 #include "src/core/ip/types.hpp"
@@ -19,5 +20,13 @@ int main() {
   } else {
     std::cout << res.value().body << '\n';
   }
+
+  config::Manager cfgManager{};
+  if (auto cfg = cfgManager.loadConfig(); !cfg) {
+    std::cout << cfg.error() << '\n';
+  } else {
+    std::cout << *cfg << '\n';
+  }
+
   return 0;
 }
