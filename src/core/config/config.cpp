@@ -9,6 +9,8 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
+#include "src/core/error/error.hpp"
+
 namespace config {
 
 std::expected<Config, Error> Manager::loadConfig() const {
@@ -34,16 +36,14 @@ std::expected<bool, Error> Manager::writeConfig(const Config& config) const {
 
 std::expected<Config, Error> Manager::readConfigFile(
     std::filesystem::path& filePath) const {
-  std::ifstream ifs(filePath);
-  nlohmann::json jsonCfg;
-  ifs >> jsonCfg;
-  return jsonCfg;
+  // TODO: determine what errors can be thrown from Serializing
+  return jsonParser_.parse(filePath);
 }
 
 std::expected<std::filesystem::path, Error> Manager::ensureConfigFile() const {
   const char* home = std::getenv("HOME");
   if (!home) {
-    return std::unexpected{Error("unable to determine home directory")};
+    return std::unexpected{error::INVALID_ENV_VAR_ERROR("HOME")};
   }
 
   std::filesystem::path configDir =
@@ -76,7 +76,7 @@ std::expected<std::filesystem::path, Error> Manager::ensureConfigFile() const {
   }
 
   if (needEdit) {
-    message += "please edit the configuration file";
+    message += "***please edit the configuration file***";
     return std::unexpected{Error(message)};
   }
 

@@ -1,6 +1,5 @@
 #pragma once
 #include <expected>
-#include <string>
 #include <string_view>
 
 #include "src/core/error/error.hpp"
@@ -23,17 +22,17 @@ class Resolver {
     auto queryResult = queryService(Protocol::SERVICE_URL);
 
     if (!queryResult) {
-      return std::unexpected{Error(queryResult.error().message)};
+      return std::unexpected{queryResult.error()};
     }
 
-    auto parseResult = jsonParser_.parse(queryResult.value().body);
+    auto parseResult = jsonParser_.parse(queryResult->body);
     if (!parseResult) {
-      return std::unexpected{Error(parseResult.error().message)};
+      return std::unexpected{parseResult.error()};
     }
 
     auto parsed = parseResult.value();
     if (!parsed.contains(IP_KEY)) {
-      return std::unexpected{Error("ip key not found")};
+      return std::unexpected{error::JSON_KEY_NOT_FOUND_ERROR(IP_KEY)};
     }
 
     return Protocol(parsed[IP_KEY]);

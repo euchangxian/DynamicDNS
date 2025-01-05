@@ -21,7 +21,7 @@ int main() {
     std::cout << res.value().body << '\n';
   }
 
-  config::Manager cfgManager{};
+  config::Manager cfgManager{jsonParser};
   if (auto cfg = cfgManager.loadConfig(); !cfg) {
     std::cout << cfg.error() << '\n';
   } else {

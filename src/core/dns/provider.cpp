@@ -4,6 +4,7 @@
 #include <string_view>
 #include <vector>
 
+#include "src/core/error/error.hpp"
 #include "types.hpp"
 
 namespace dns {
@@ -13,7 +14,7 @@ std::expected<bool, Error> PorkBunProvider::createRecords(
     [[maybe_unused]] const std::vector<record::Record>& record) const {
   // TODO:
   if (domain.empty()) {
-    return std::unexpected{Error("empty domain name")};
+    return std::unexpected{error::INVALID_DOMAIN_ERROR(domain)};
   }
 
   std::string requestEndpoint = formatEndpoint(CREATE_RECORD_ENDPOINT, domain);

@@ -3,6 +3,7 @@
 #include <string_view>
 
 #include "src/core/error/error.hpp"
+#include "src/core/json/parser.hpp"
 #include "types.hpp"
 
 namespace config {
@@ -27,6 +28,8 @@ class IManager {
 
 class Manager final : public IManager {
  public:
+  explicit Manager(const json::IParser& parser) : jsonParser_(parser) {}
+
   std::expected<Config, Error> loadConfig() const override;
 
   // NOTE: For some reason, returning std::expected<void, Error> is tricky?
@@ -34,6 +37,8 @@ class Manager final : public IManager {
   std::expected<bool, Error> writeConfig(const Config& config) const override;
 
  private:
+  const json::IParser& jsonParser_;
+
   std::expected<Config, Error> readConfigFile(
       std::filesystem::path& filePath) const;
 

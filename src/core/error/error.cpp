@@ -5,11 +5,11 @@
 namespace error {
 
 std::ostream& operator<<(std::ostream& os, const Error& error) noexcept {
-  os << "error ";
-  if (error.code_ > 0) {
-    os << error.code_ << ' ';
+  os << error.what();
+  if (error.code_ != 0) {
+    os << ", code: " << error.code_;
   }
-  return os << error.what();
+  return os;
 }
 
 }  // namespace error
